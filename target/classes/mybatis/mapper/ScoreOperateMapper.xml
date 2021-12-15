@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deyu.mapper.ScoreOperateMapper">
+
+    <select id="queryScoreView" resultType="com.deyu.pojo.Score_view">
+        select *
+        from deyu.score_view
+        <where>
+            <if test="Keyword!=null">
+                and concat_ws(" ",id,stuid,stuname,scoreinfo) regexp #{Keyword}
+            </if>
+            and shibie = 0
+        </where>
+        limit #{page} ,#{limit};
+    </select>
+    <select id="queryScoreViewinfo" resultType="com.deyu.pojo.Score_view">
+        select * from deyu.score_view;
+    </select>
+    <select id="queryScoreViewid" resultType="com.deyu.pojo.Score_view">
+        select * from deyu.score_view
+        where id=#{id};
+    </select>
+
+    <select id="queryZlogview" resultType="com.deyu.pojo.Zlog_view">
+        select *
+        from deyu.zlog_view
+        <where>
+            <if test="Keyword!=null">
+                and concat_ws(" ",id,s_id,s_name) regexp #{Keyword}
+            </if>
+        </where>
+        limit #{page} ,#{limit};
+    </select>
+    <select id="queryZlogviewinfo" resultType="com.deyu.pojo.Zlog_view">
+        select * from deyu.zlog_view;
+    </select>
+    <update id="editScoreoperation" parameterType="com.deyu.pojo.Scoreoperation">
+        update deyu.Scoreoperation
+        set opstate=#{opstate} , info=#{info},othername=#{othername},otherstate=#{otherstate},othertime=#{othertime},shibie=#{shibie}
+        where id=#{id};
+    </update>
+    <insert id="addScoreoperation" parameterType="com.deyu.pojo.Scoreoperation">
+        insert into deyu.scoreoperation(id,stuid,stuname,stusex,stuclass,opcollege,opmajor,opteacher,opusername,opjurisdiction,opname,opclass,opclassinfo,opscoreclass,score,opstate,opscorefir,opscoresec,datetime,ip,info,othername,otherstate,othertime,shibie)
+        values (#{id},#{stuid},#{stuname},#{stusex},#{stuclass},#{opcollege},#{opmajor},#{opteacher},#{opusername},#{opjurisdiction},#{opname},#{opclass},#{opclassinfo},#{opscoreclass},#{score},#{opstate},#{opscorefir},#{opscoresec},#{datetime},#{ip},#{info},#{othername},#{otherstate},#{othertime},#{shibie});
+    </insert>
+<!--    //学生学分查询—学分加减记录-->
+    <select id="queryScoreViewStu" resultType="com.deyu.pojo.Score_view">
+        select * from deyu.score_view
+        where stuid=#{stuid} and stuname=#{stuname};
+    </select>
+</mapper>

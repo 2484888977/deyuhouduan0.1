@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deyu.mapper.ApartmentMapper">
+
+    <insert id="addApartment" parameterType="com.deyu.pojo.Apartment">
+        insert into deyu.apartment(apartmentid,apartmentinfo,collegeid)
+        values (#{apartmentid},#{apartmentinfo},#{collegeid})
+    </insert>
+    <!--    //关键字查询-->
+    <select id="selectwhereApartment" resultType="com.deyu.pojo.Apartment_view">
+        select * from deyu.apartment_view
+    </select>
+    <!--    //查看/编辑-->
+    <select id="queryApartmentinfo" resultType="com.deyu.pojo.Apartment_view">
+        select * from deyu.apartment_view
+        where apartmentid=#{apartmentid};
+    </select>
+    <select id="queryApartmentinfoid" resultType="com.deyu.pojo.Apartment_view">
+        select * from deyu.apartment_view
+        where apartmentinfo=#{apartmentinfo};
+    </select>
+    <delete id="deleteApartment" parameterType="com.deyu.pojo.Apartment">
+        delete from deyu.apartment
+        where apartmentid=#{apartmentid}
+    </delete>
+    <update id="updateApartment" parameterType="com.deyu.pojo.Apartment">
+        update deyu.apartment set apartmentinfo =#{apartmentinfo}, collegeid =#{collegeid}
+        where apartmentid =#{apartmentid}
+    </update>
+<!--    查询公寓/关键字查询-->
+    <select id="selectApartment" resultType="com.deyu.pojo.Apartment_view">
+        select * from deyu.apartment_view
+        <where>
+            <if test="Keyword!= null">
+                and concat_ws(" ",apartmentinfo,collegeinfo) regexp #{Keyword}
+            </if>
+        </where>
+        limit #{page},#{limit}
+    </select>
+
+</mapper>

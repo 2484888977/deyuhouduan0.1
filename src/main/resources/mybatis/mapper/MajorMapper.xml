@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deyu.mapper.MajorMapper">
+    <insert id="addMajorInfo" parameterType="com.deyu.pojo.Major">
+        <!--    添加专业-->
+        insert into deyu.major(majorid,majorinfo,collegeid) VALUES
+        (#{majorid},#{majorinfo},#{collegeid})
+    </insert>
+    <!--    修改专业-->
+    <update id="updateMajorInfo" parameterType="com.deyu.pojo.Major">
+        update deyu.major
+        set majorinfo=#{majorinfo},
+            collegeid=#{collegeid}
+        where majorid = #{majorid}
+    </update>
+    <!--    查看编辑-->
+    <select id="queryMajor" resultType="com.deyu.pojo.Major_view">
+        select *
+        from deyu.major_view
+        where majorid = #{majorid}
+    </select>
+    <!--    删除专业-->
+    <delete id="deleteMajorInfo" parameterType="com.deyu.pojo.Major">
+        delete
+        from deyu.major
+        where majorid = #{majorid}
+    </delete>
+    <!--    通过学院查找专业-->
+    <select id="selectCollegeMajor" resultType="com.deyu.pojo.Major_view">
+        select *
+        from deyu.major_view
+        where collegeid = #{collegeid}
+    </select>
+    <!--    查找全部专业-->
+    <select id="selectMajor" resultType="com.deyu.pojo.Major_view">
+        select *
+        from deyu.major_view
+    </select>
+    <!--    查找专业-->
+    <select id="selectMajorInfo" resultType="com.deyu.pojo.Major_view">
+        select * from deyu.major_view
+        <where>
+            <if test="Keyword!= null">
+                and concat_ws(" ",majorinfo,collegeinfo) regexp #{Keyword}
+            </if>
+        </where>
+        limit #{page},#{limit}
+    </select>
+    <!--    名称转id-->
+    <select id="queryMajorinfoid" resultType="com.deyu.pojo.Major">
+        select *
+        from deyu.major
+        where majorinfo = #{majorinfo}
+    </select>
+</mapper>

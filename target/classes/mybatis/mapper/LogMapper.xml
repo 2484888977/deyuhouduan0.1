@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deyu.mapper.LogMapper">
+
+    <insert id="addLog" parameterType="com.deyu.pojo.Syslog">
+        insert into deyu.syslog(id, name, account, time, content, requestIp)
+        values (#{id}, #{name}, #{account}, #{time}, #{content}, #{requestIp})
+    </insert>
+
+    <select id="selectLogInfo" resultType="java.util.List">
+        select *
+        from deyu.syslog
+        order by time desc
+        limit #{page}, #{limit}
+    </select>
+    <select id="showCount" resultType="java.lang.Integer">
+        select count(*)
+        from deyu.syslog
+    </select>
+
+
+
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deyu.mapper.ClassesMapper">
+
+
+    <insert id="addClasses" parameterType="com.deyu.pojo.Classes">
+        insert into deyu.classes(classes, teacherid, majorid, collegeid)
+        values (#{classes}, #{teacherid}, #{majorid}, #{collegeid})
+    </insert>
+    <!--    //批量添加班级信息-->
+    <insert id="addAllClasses" parameterType="java.util.List">
+        insert into deyu.classes
+        (classes,teacherid,majorid,collegeid)
+        values
+        <trim suffixOverrides=",">
+            <foreach collection="list" item="item">
+                (#{item.classes},#{item.teacherid},#{item.majorid},#{item.collegeid}),
+            </foreach>
+        </trim>
+    </insert>
+<!--    //删除班级-->
+    <delete id="deleteClasses" parameterType="com.deyu.pojo.Classes">
+        delete
+        from deyu.classes
+        where classes = #{classes}
+    </delete>
+    <!--修改班级-->
+    <update id="updataClasses" parameterType="com.deyu.pojo.Classes">
+        update deyu.classes
+        set teacherid = #{teacherid},
+            majorid   = #{majorid},
+            collegeid = #{collegeid}
+        where classes = #{classes}
+
+    </update>
+    <!--通过学院查找班级-->
+    <select id="selectCollegeClass" resultType="com.deyu.pojo.Class_View">
+        select *
+        from deyu.class_view
+        where collegeid = #{collegeid}
+    </select>
+    <!--    //查看/编辑-->
+    <select id="queryClassinfo" resultType="com.deyu.pojo.Class_View">
+        select *
+        from deyu.class_view
+        where classes = #{classes};
+    </select>
+    <!--    //查询全部班级-->
+    <select id="selectwhereClasses" resultType="com.deyu.pojo.Class_View">
+        select *
+        from deyu.class_view
+    </select>
+
+    <!--查找班级 -->
+    <select id="selectClasses" parameterType="com.deyu.pojo.Class_View" resultType="com.deyu.pojo.Class_View">
+        select * from deyu.class_view
+        <where>
+            <if test="Keyword!= null">
+                and concat_ws(" ",classes,teacherinfo,majorinfo,collegeinfo) regexp #{Keyword}
+            </if>
+        </where>
+        limit #{page},#{limit}
+    </select>
+
+
+</mapper>

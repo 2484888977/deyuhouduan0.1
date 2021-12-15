@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deyu.mapper.ScorefirstMapper">
+    <!--添加学分一级分类-->
+    <insert id="addScorefirst">
+        insert into deyu.scorefirst(scoreid,scoreinfo,collegeid,scorebl) VALUES
+        (#{scoreid},#{scoreinfo},#{collegeid},#{scorebl})
+    </insert>
+    <!--修改学分一级分类-->
+    <update id="updateScore" parameterType="com.deyu.pojo.Scorefirst">
+        update deyu.scorefirst set scoreinfo=#{scoreinfo},collegeid=#{collegeid}
+            where scoreid=#{scoreid}
+    </update>
+    <!--删除-->
+    <delete id="deleteScore" parameterType="com.deyu.pojo.Scorefirst">
+        delete from deyu.scorefirst
+        where scoreid=#{scoreid}
+    </delete>
+    <!--查看学分-->
+    <select id="selectfirScore" resultType="com.deyu.pojo.Scorefir_view">
+        select * from deyu.scorefir_view
+        <where>
+            <if test="Keyword!= null">
+                and concat_ws("",scoreinfo,collegeinfo) regexp #{Keyword}
+            </if>
+        </where>
+    limit #{page},#{limit}
+    </select>
+    <!--关键字查询-->
+    <select id="selecrfirWhereScore" resultType="com.deyu.pojo.Scorefir_view">
+        select * from deyu.scorefir_view
+        where concat_ws("",scoreinfo,collegeinfo) regexp #{Keyword}
+    </select>
+    <!--查看编辑-->
+    <select id="queryScorefir" resultType="com.deyu.pojo.Scorefir_view">
+        select * from deyu.scorefir_view
+        where scoreid=#{scoreid}
+    </select>
+    <!--查看全部-->
+    <select id="selectAll" resultType="com.deyu.pojo.Scorefir_view">
+        select * from deyu.scorefir_view
+    </select>
+
+</mapper>

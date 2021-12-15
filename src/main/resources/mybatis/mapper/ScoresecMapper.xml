@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deyu.mapper.ScoresecMapper">
+    <!--添加二级学分-->
+    <insert id="addScoresec" parameterType="com.deyu.pojo.Scoresec">
+        insert into deyu.scoresec(scoresecid,scoresecinfo,scorefirid,classid,score) VALUES
+            (#{scoresecid},#{scoresecinfo},#{scorefirid},#{classid},#{score})
+    </insert>
+    <!--更改二级学分-->
+    <update id="updatScoresec" parameterType="com.deyu.pojo.Scoresec">
+        update deyu.scoresec set
+            scoresecinfo=#{scoresecinfo},scorefirid=#{scorefirid},classid=#{classid},score=#{score}
+            where scoresecid=#{scoresecid}
+    </update>
+    <!--删除二级学分-->
+    <delete id="deleteScoresec" parameterType="com.deyu.pojo.Scoresec">
+        delete from deyu.scoresec
+        where scoresecid=#{scoresecid}
+    </delete>
+    <!--查看二级学分-->
+    <select id="selectScoresec" resultType="com.deyu.pojo.Scoresec_view">
+        select * from deyu.scoresec_view
+        <where>
+            <if test="Keyword!= null">
+                and concat_ws("",scoreinfo,scoresecinfo) regexp #{Keyword}
+            </if>
+        </where>
+        limit #{page},#{limit}
+    </select>
+    <!--关键字查询-->
+    <select id="selectWhereScoresec" resultType="com.deyu.pojo.Scoresec_view">
+        select * from deyu.scoresec_view
+        where concat_ws("",scoreinfo,scoresecinfo) regexp #{keyword}
+    </select>
+    <!--查看编辑-->
+    <select id="queryScoresec" resultType="com.deyu.pojo.Scoresec_view">
+        select * from deyu.scoresec_view
+        where scoresecid=#{scoresecid}
+    </select>
+    <!--一二级查看-->
+    <select id="queryallScoresec" resultType="com.deyu.pojo.Scoresec_view">
+        select * from deyu.scoresec_view
+        where scorefirid=#{scorefirid}
+    </select>
+</mapper>

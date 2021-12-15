@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deyu.mapper.UserclassMapper">
+    <!--    //专业信息管理-->
+    <select id="queryUserclass" resultType="com.deyu.pojo.Userclass">
+        select *
+        from deyu.userclass;
+    </select>
+    <!--    //    学院/部门单位名称查询id-->
+    <select id="queryUserclassinfoid" resultType="com.deyu.pojo.Userclass">
+        SELECT *
+        from deyu.userclass
+        where userinfo = #{userinfo};
+    </select>
+
+</mapper>

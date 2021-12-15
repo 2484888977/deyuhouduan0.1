@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deyu.mapper.StudentsMapper">
+    <!--    添加学生-->
+    <insert id="addStudentsInfo" parameterType="com.deyu.pojo.Students">
+        insert into deyu.students ( s_id, s_name, s_sex, s_proid, s_nation, s_add, s_home, s_dadname
+                                  , s_dadadd, s_mumname, s_mumadd, s_class, s_room, collegeid, majorid, teacherid
+                                  , score, s_apartment, s_dormitory, apartment, dormitory, openid)
+        VALUES ( #{s_id}, #{s_name}, #{s_sex}, #{s_proid}, #{s_nation}, #{s_add}, #{s_home}, #{s_dadname}
+               , #{s_dadadd}, #{s_mumname}, #{s_mumadd}, #{s_class}, #{s_room}, #{collegeid}, #{majorid}, #{teacherid}
+               , #{score}, #{s_apartment}, #{s_dormitory}, #{apartment}, #{dormitory}, #{openid})
+    </insert>
+    <!--    批量添加学生-->
+    <insert id="addAllStudent" parameterType="com.deyu.pojo.Students">
+        insert into deyu.students
+        (s_id, s_name, s_sex, s_proid, s_add, s_class, s_room, collegeid, majorid, teacherid, score, s_apartment,
+         s_dormitory, apartment, dormitory)
+        VALUES ( #{s_id}, #{s_name}, #{s_sex}, #{s_proid}, #{s_add}
+               , #{s_class}, #{s_room}, #{collegeid}, #{majorid}, #{teacherid}
+               , #{score}, #{s_apartment}, #{s_dormitory}, #{apartment}, #{dormitory})
+    </insert>
+    <!--    查看——学生学分-->
+    <select id="queryStudentScore" resultType="com.deyu.pojo.Stu_view">
+        select *
+        from deyu.stu_view
+        where s_id = #{s_id}
+          and s_proid = #{s_proid};
+    </select>
+    <!--    //查看——学生详情-->
+    <select id="selectStudentDetails" resultType="com.deyu.pojo.Stu_view">
+        select *
+        from deyu.stu_view
+        where s_id = #{s_id};
+    </select>
+
+    <!--    //编辑——学生信息-->
+    <update id="updateStudentsInfo" parameterType="com.deyu.pojo.Students">
+        update deyu.students
+        set s_name=#{s_name},
+            s_sex=#{s_sex},
+            s_add=#{s_add},
+            s_home=#{s_home},
+            s_dadname=#{s_dadname},
+            s_dadadd=#{s_dadadd},
+            s_mumname=#{s_mumname},
+            s_mumadd=#{s_mumadd},
+            s_class=#{s_class},
+            s_room=#{s_room},
+            collegeid=#{collegeid},
+            majorid=#{majorid},
+            teacherid=#{teacherid},
+            s_apartment=#{s_apartment},
+            s_dormitory=#{s_dormitory},
+            apartment=#{apartment},
+            dormitory=#{dormitory}
+        where s_id = #{s_id};
+    </update>
+
+
+    <!--    学生学分更改-->
+    <update id="editStudentScore" parameterType="com.deyu.pojo.Students">
+        update deyu.students
+        set score=#{score}
+        where s_id = #{s_id};
+    </update>
+
+    <delete id="deleteStudentsInfo" parameterType="com.deyu.pojo.Students">
+        delete
+        from deyu.students
+        where s_id = #{s_id}
+    </delete>
+
+    <select id="selectStudentsInfo" resultType="com.deyu.pojo.Stu_view">
+<!--        select * from deyu.stu_view-->
+<!--        <where>-->
+<!--            <if test="Keyword!=null">-->
+<!--                and concat_ws(" ", s_id,s_name,s_class,teacherinfo,apartmentinfo,dormitoryinfo) regexp #{Keyword}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--        limit #{page},#{limit};-->
+        select *
+        from deyu.stu_view
+        <where>
+            <if test="Keyword!=null">
+                and concat_ws(" ", s_id,s_name,s_class,teacherinfo,apartmentinfo,dormitoryinfo) regexp #{Keyword}
+            </if>
+            <if test="code==4">
+                and collegeid = #{xianzhi}
+            </if>
+            <if test="code==6">
+                and teacherid = #{xianzhi}
+            </if>
+            <if test="code==7">
+                and s_class = #{xianzhi}
+            </if>
+            <!--            <choose>-->
+            <!--                <when test="code==4">-->
+            <!--                    and collegeid = #{xianzhi}-->
+            <!--                </when>-->
+            <!--                <when test="code==6">-->
+            <!--                    and teacherid = #{xianzhi}-->
+            <!--                </when>-->
+            <!--            </choose>-->
+        </where>
+        limit #{page} ,#{limit};
+    </select>
+    <!--    按照身份证查找，判断是否存在-->
+    <select id="queryStudentproid" resultType="com.deyu.pojo.Stu_view">
+        select *
+        from deyu.stu_view
+        where s_proid = #{s_proid};
+    </select>
+</mapper>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deyu.mapper.CollegeMapper">
+    <!--    添加学院-->
+    <insert id="addCollegeinfo" parameterType="com.deyu.pojo.College">
+        insert into deyu.college(collegeid, collegeinfo, userclass) VALUE
+            (#{collegeid},#{collegeinfo},#{userclass})
+    </insert>
+    <!--    删除学院-->
+    <delete id="deleteCollegeInfo" parameterType="com.deyu.pojo.College">
+        delete
+        from deyu.college
+        where collegeid = #{collegeid}
+    </delete>
+    <!--    查询部门/学院-->
+    <select id="queryCollegeAll" resultType="com.deyu.pojo.College">
+        select *
+        from dysystem.college
+    </select>
+    <!--    查看学院-->
+    <select id="selectCollege" resultType="com.deyu.pojo.College">
+        select *
+        from deyu.college
+        where userclass = '1'
+    </select>
+    <!--    //    学院id转名-->
+    <select id="selectCollegeXY" resultType="com.deyu.pojo.College">
+        select *
+        from deyu.college
+        where userclass = '1'
+          and collegeid = #{collegeid}
+    </select>
+
+    <!--    查看部门-->
+    <select id="selectCollege01" resultType="com.deyu.pojo.College">
+        select *
+        from deyu.college
+        where userclass = '2'
+    </select>
+    <!--    //    部门id转名-->
+    <select id="selectCollegeXY01" resultType="com.deyu.pojo.College">
+        select *
+        from deyu.college
+        where userclass = '2'
+          and collegeid = #{collegeid}
+    </select>
+    <!--    修改学院-->
+    <update id="updateCollegeInfo" parameterType="com.deyu.pojo.College">
+        update deyu.college
+        set collegeinfo = #{collegeinfo}
+        where collegeid = #{collegeid}
+    </update>
+    <!--        //id查询学院/部门-->
+    <select id="selectCollegeX" resultType="com.deyu.pojo.College">
+        select *
+        from deyu.college
+        where collegeid = #{collegeid}
+    </select>
+    <!--    查询部门//关键词查询-->
+    <select id="selectCollegeInfo01" resultType="com.deyu.pojo.College">
+        select *
+        from deyu.college
+        <where>
+            <if test="Keyword!= null">
+                and concat_ws(" ",collegeinfo) regexp #{Keyword}
+            </if>
+            and userclass = '1'
+        </where>
+        limit #{page} ,#{limit};
+    </select>
+    <!--    查询部门//关键词查询-->
+    <select id="selectCollegeInfo" resultType="com.deyu.pojo.College">
+        select *
+        from deyu.college
+        <where>
+            <if test="Keyword!= null">
+                and concat_ws(" ",collegeinfo) regexp #{Keyword}
+            </if>
+            and userclass = '2'
+        </where>
+        limit #{page} ,#{limit};
+    </select>
+    <!--    名称转id-->
+    <select id="queryCollegeinfoid" resultType="com.deyu.pojo.College">
+        select *
+        from deyu.college
+        where collegeinfo = #{collegeinfo};
+    </select>
+</mapper>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deyu.mapper.UserMapper">
+
+    <select id="login" resultType="com.deyu.pojo.User">
+        select *
+        from deyu.user
+        where username = #{username}
+          and password = #{password}
+    </select>
+    <!--    批量添加用户-->
+    <insert id="addAllUser" parameterType="com.deyu.pojo.User">
+        insert into deyu.user
+            (username, u_name, password, u_sex, u_class, u_classinfo,jurisdiction, stateCode, user_id, address)
+        values (#{username}, #{u_name}, #{password}, #{u_sex}, #{u_class}, #{u_classinfo},
+                #{jurisdiction}, #{stateCode}, #{user_id}, #{address});
+    </insert>
+
+    <select id="queryUserInfo" resultType="com.deyu.pojo.User_view">
+        select *
+        from deyu.user_view
+        where u_id = #{u_id}
+    </select>
+    <!--    //操作——>查看/编辑——编辑-->
+    <update id="updateUser" parameterType="com.deyu.pojo.User">
+        update deyu.user
+        set u_name=#{u_name},
+            u_sex=#{u_sex},
+            u_class=#{u_class},
+            u_mail=#{u_mail},
+            u_classinfo=#{u_classinfo},
+            jurisdiction=#{jurisdiction},
+            stateCode=#{stateCode},
+            user_id=#{user_id},
+            address=#{address},
+            qq=#{qq},
+            vx=#{vx}
+        where u_id = #{u_id};
+    </update>
+
+    <update id="saveUserInfo" parameterType="com.deyu.pojo.User">
+        update deyu.user
+        set address=#{address},
+            qq=#{qq},
+            vx=#{vx},
+            u_mail=#{u_mail}
+        where u_id = #{u_id}
+    </update>
+
+    <select id="verifyUserPwd" resultType="com.deyu.pojo.User">
+        select *
+        from deyu.user
+        where u_id = #{u_id}
+          and password = #{password}
+    </select>
+
+    <update id="updateUserPwd" parameterType="com.deyu.pojo.User">
+        update deyu.user
+        set password=#{password}
+        where u_id = #{u_id}
+
+
+    </update>
+    <!--添加用户-->
+    <insert id="addUser" parameterType="com.deyu.pojo.User">
+        insert into deyu.user (u_id, username, u_name, password, u_sex, u_class, u_add, u_mail, u_classinfo,
+                               jurisdiction, jurisdictioninfo, stateCode, info, user_id, address, qq, vx, del, openid,
+                               apartmentid, allfrt, allsec, apartmentid2)
+        values (#{u_id}, #{username}, #{u_name}, #{password}, #{u_sex}, #{u_class}, #{u_add}, #{u_mail}, #{u_classinfo},
+                #{jurisdiction}, #{jurisdictioninfo}, #{stateCode}, #{info}, #{user_id}, #{address}, #{qq}, #{vx},
+                #{del}, #{openid}, #{apartmentid}, #{allfrt}, #{allsec}, #{apartmentid2});
+    </insert>
+
+    <!--    //重置密码-->
+    <update id="resetUserPwd" parameterType="com.deyu.pojo.User">
+        update deyu.user
+        set password= #{password}
+        where u_id = #{u_id};
+    </update>
+
+    <update id="deleteUser" parameterType="com.deyu.pojo.User">
+        delete
+        from deyu.user
+        where u_id = #{u_id}
+    </update>
+    <!--查找用户//关键词查找——用户名，用户姓名，所属单位名称 -->
+    <select id="queryUser" resultType="com.deyu.pojo.User_view">
+        select *
+        from deyu.user_view
+        <where>
+            <if test="Keyword!= null">
+                and concat_ws(" ", username, u_name, collegeinfo) regexp #{Keyword}
+            </if>
+        </where>
+        limit #{page},#{limit}
+    </select>
+
+
+</mapper>

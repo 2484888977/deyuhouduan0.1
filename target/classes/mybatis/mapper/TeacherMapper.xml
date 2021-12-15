@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.deyu.mapper.TeacherMapper">
+
+
+    <insert id="addTeacherInfo" parameterType="com.deyu.pojo.Teacher">
+        insert into deyu.teacher(teacherid, teacherinfo, collegeid, teachersex, teacheradd)
+        VALUES (#{teacherid}, #{teacherinfo}, #{collegeid}, #{teachersex}, #{teacheradd})
+    </insert>
+
+    <update id="updateTeacherInfo" parameterType="com.deyu.pojo.Teacher">
+        update deyu.teacher
+        set teacherinfo=#{teacherinfo},
+            collegeid=#{collegeid},
+            teachersex=#{teachersex},
+            teacheradd=#{teacheradd}
+        where teacherid = #{teacherid}
+    </update>
+
+    <delete id="deleteTeacherInfo" parameterType="com.deyu.pojo.Teacher">
+        delete
+        from deyu.teacher
+        where teacherid = #{teacherid}
+    </delete>
+    <!--查看编辑-->
+    <select id="selectTeacher01" resultType="com.deyu.pojo.Teacher_view">
+        select *
+        from deyu.teacher_view
+        where teacherid = #{teacherid}
+    </select>
+    <!--    //    查询全部教师-->
+    <select id="selectTeacher" resultType="com.deyu.pojo.Teacher_view">
+        select *
+        from deyu.teacher_view
+    </select>
+    <!--    通过学院查找辅导员-->
+    <select id="selectCollegeTeacher" resultType="com.deyu.pojo.Teacher_view">
+        select *
+        from deyu.teacher_view
+        where collegeid = #{collegeid};
+    </select>
+    <!--    //关键字查询-->
+    <select id="selectTeacherInfo" resultType="com.deyu.pojo.Teacher_view">
+        select * from deyu.teacher_view
+        <where>
+            <if test="Keyword!= null">
+                and concat_ws(" ",teacherinfo,collegeinfo) regexp #{Keyword}
+            </if>
+        </where>
+        limit #{page},#{limit}
+    </select>
+    <!--    名称转id-->
+    <select id="queryTeacherinfoid" resultType="com.deyu.pojo.Teacher">
+        select *
+        from deyu.teacher
+        where teacherinfo=#{teacherinfo};
+    </select>
+</mapper>
