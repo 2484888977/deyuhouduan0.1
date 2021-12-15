@@ -23,5 +23,4 @@ public interface ScoreOperateMapper {
     int addScoreoperation(Scoreoperation scoreoperation);
     //学生学分查询—学分加减记录
     List<Score_view> queryScoreViewStu(@Param("stuid")String stuid,@Param("stuname")String stuname);
-//    Zlog_view queryZlogviewid();
 }

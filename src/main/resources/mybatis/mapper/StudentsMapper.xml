@@ -73,13 +73,6 @@
     </delete>
 
     <select id="selectStudentsInfo" resultType="com.deyu.pojo.Stu_view">
-<!--        select * from deyu.stu_view-->
-<!--        <where>-->
-<!--            <if test="Keyword!=null">-->
-<!--                and concat_ws(" ", s_id,s_name,s_class,teacherinfo,apartmentinfo,dormitoryinfo) regexp #{Keyword}-->
-<!--            </if>-->
-<!--        </where>-->
-<!--        limit #{page},#{limit};-->
         select *
         from deyu.stu_view
         <where>
@@ -95,14 +88,6 @@
             <if test="code==7">
                 and s_class = #{xianzhi}
             </if>
-            <!--            <choose>-->
-            <!--                <when test="code==4">-->
-            <!--                    and collegeid = #{xianzhi}-->
-            <!--                </when>-->
-            <!--                <when test="code==6">-->
-            <!--                    and teacherid = #{xianzhi}-->
-            <!--                </when>-->
-            <!--            </choose>-->
         </where>
         limit #{page} ,#{limit};
     </select>
